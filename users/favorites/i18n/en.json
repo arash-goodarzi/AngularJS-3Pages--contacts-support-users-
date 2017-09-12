@@ -1,0 +1,13 @@
+{
+    "FAVORITES": {
+        "SAMPLE_NAV": "favorites",
+        "title": "favorites",
+        "Dashboard": "Dashboard",
+        "Timeline": "Timeline",
+        "Team": "Team",
+        "box1": "",
+        "Pages scanned": "Pages scanned",
+        "Issues found": "Issues found",
+        "Scans": "Scans"
+    }
+}

@@ -1,0 +1,406 @@
+<div id="e-commerce-products" class="page-layout carded fullwidth" layout="row">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg md-accent-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center" layout="column" flex>
+
+        <!-- CONTENT HEADER -->
+        <div class="header" layout="row" layout-align="space-between center">
+            <div class="white-fg" layout="column" layout-align="start start">
+                <div class="h1 clickable" layout="row" layout-align="start center" data-ng-click="refresh()">
+                    <md-icon md-font-icon="icon-account"></md-icon>
+                    <span data-translate="DASHBOARD.activeusers"></span>
+                </div>
+            </div>
+
+            <div class="search" layout="row" layout-align="start center" flex>
+                <md-icon md-font-icon="icon-magnify" class="white-text icon search-icon"></md-icon>
+                <input id="search-input" class="search-input" type="text" placeholder="Search" translate translate-attr-placeholder="DASHBOARD.Search" flex data-ng-model="search.q">
+            </div>
+
+            <md-button class=" md-fab md-warn" aria-label="{{DASHBOARD.Create|translate}}" data-ng-click="create()" data-ng-if="mode == 'list'">
+                <md-icon class="fold-toggle s18" md-font-icon="icon-plus" hide show-gt-sm></md-icon>
+                <md-tooltip><span data-translate="DASHBOARD.Create a new User"></span></md-tooltip>
+            </md-button>
+
+            <md-button class=" md-fab md-warn" aria-label="{{DASHBOARD.Close|translate}}" data-ng-click="close()" data-ng-if="mode != 'list'">
+                <md-icon class="fold-toggle s18" md-font-icon="icon-arrow-left" hide show-gt-sm></md-icon>
+                <md-tooltip><span data-translate="DASHBOARD.Close"></span></md-tooltip>
+            </md-button>
+        </div>
+        <!-- / CONTENT HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" layout="column" flex>
+
+            <!-- CONTENT TOOLBAR -->
+
+            <!-- / CONTENT TOOLBAR -->
+
+            <!-- CONTENT -->
+
+            <!-- List -->
+            <div class="content fullpage-datatable" layout="column" flex data-ng-if="mode == 'list'">
+
+                <table id = "activeuserstable" class="dataTable row-border hover" datatable="ng" data-dt-options="dtOptions" dt-instance="dtInstance" >
+                    <thead>
+                        <tr>
+                            <th><span class="column-title" data-translate="DASHBOARD.Photo"></span></th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title" data-translate="DASHBOARD.Firstname"></span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title" data-translate="DASHBOARD.Lastname"></span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title" data-translate="DASHBOARD.Username"></span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title" data-translate="DASHBOARD.Phone"></span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title" data-translate="DASHBOARD.Email"></span>
+                                </div>
+                            </th>
+                            <th><span class="column-title" data-translate="DASHBOARD.Actions"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="user in users | filter:search.q">
+                            <td><img class="avatar" alt="user.first_name" data-ng-src="{{get_icon(user)}}"></td>
+                            <td><span data-ng-click="edit(user)" class="clickable">{{user.first_name}}</span></td>
+                            <td><span>{{user.last_name}}</span></td>
+                            <td><span>{{user.username}}</span></td>
+                            <td><span>{{user.phone}}</span></td>
+                            <td><span>{{user.email}}</span></td>
+                            <td>
+                                <button class="md-icon-button edit-group-button md-button data-ng-scope md-default-theme md-ink-ripple" type="button"  data-ng-click="edit(user)" aria-label="edit group name" translate="">
+                                    <md-icon md-font-icon="icon-pencil s18" class="ng-scope md-default-theme md-font material-icons icon-pencil s18" aria-hidden="true"></md-icon>
+                                    <div class="md-ripple-container"></div>
+                                    <md-tooltip><span data-translate="DASHBOARD.Edit"></span></md-tooltip>
+                                </button>
+                                <button class="md-icon-button edit-group-button md-button data-ng-scope md-default-theme md-ink-ripple" type="button" data-ng-click="showDelete(user)" aria-label="delete group" translate="">
+                                    <md-icon md-font-icon="icon-delete s18" class="ng-scope md-default-theme md-font material-icons icon-delete s18" aria-hidden="true"></md-icon>
+                                    <div class="md-ripple-container"></div>
+                                    <md-tooltip><span data-translate="DASHBOARD.Delete"></span></md-tooltip>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /List -->
+
+            <!-- Create -->
+            <div class="content fullpage-datatable" layout="column" flex data-ng-if="mode == 'create'">
+                <div class="h2 pd-20" data-translate="DASHBOARD.Create"></div>
+                <div class="form-wrapper md-whiteframe-1dp flex-100 scrollable" flex="100">
+                    <form name="createUserForm" class="md-inline-form" novalidate">
+                        <!--Firstname and lastname-->
+                        <div layout="column" layout-gt-xs="row" flex>
+                            <!--FirstName-->
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <input type="text" name="Firstname" data-ng-model="item.first_name"
+                                       placeholder="{{'DASHBOARD.Firstname'|translate}}"
+                                       required>
+                                <div data-ng-messages="createUserForm.Firstname.$error" role="alert">
+                                    <div data-ng-message="required"> 
+                                        <span translate="DASHBOARD.Firstnamerequired" ></span>
+                                    </div>
+                                </div>
+                            </md-input-container>
+
+                            <!--LastName-->
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <input type="text" name="lastname" data-ng-model="item.last_name"
+                                       placeholder="{{'DASHBOARD.Lastname'|translate}}"   Lastname
+                                       required>
+                                <div data-ng-messages="createUserForm.lastname.$error"
+                                     role="alert">
+                                    <div data-ng-message="required">
+                                        <span translate="DASHBOARD.Lastnamerequired" ></span>
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <!--Email Address-->
+                        <md-input-container class="md-block">
+                            <input type="email" name="email" data-ng-model="item.email" placeholder="{{'DASHBOARD.Email'|translate}}"
+                                   data-ng-pattern="/^.+@.+\..+$/" required>
+                            <div data-ng-messages="createUserForm.email.$error"
+                                 role="alert" multiple>
+                                <div data-ng-message="required">
+                                    <span translate="DASHBOARD.Emailrequired"></span>
+                                </div>
+                                <div data-ng-message="pattern">
+                                    <span translate="DASHBOARD.Emailpattern"></span>
+                                </div>
+                            </div>
+                        </md-input-container>
+
+                        <!--Phone-->
+                        <div layout="column" layout-gt-xs="row" flex>
+                            <md-input-container class="md-block" flex="100" flex-gt-xs="50">
+                                <input type="tel" name="phone" data-ng-model="item.phone" placeholder="{{'DASHBOARD.Phone'|translate}}">
+                            </md-input-container>
+                        </div>
+
+                        <!--Role Selector-->
+                        <div layout="column" layout-gt-xs="row" flex>
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <label>{{'DASHBOARD.Role'|translate}}</label>
+                                <md-select aria-label="Type" required data-ng-model="item.role"  placeholder="{{'DASHBOARD.Role'|translate}}">
+                                    <md-option value="moderator"  data-translate="DASHBOARD.Moderator"></md-option>
+                                    <md-option value="operator"  data-translate="DASHBOARD.Operator"></md-option>
+                                </md-select>
+                                <!--<div class="md-legend-spacer" data-translate="DASHBOARD.Role"></div>-->
+                            </md-input-container>
+                        </div>
+
+
+                        <!--Image uploder-->
+                        <div layout="column" layout-gt-sm="row" class="layout-gt-sm-row layout-column">
+                            <md-input-container flex="" class="md-icon-float md-default-theme flex">
+                                <label class="ng-scope md-required" role="button" for="input_2" data-translate="DASHBOARD.Image"></label>
+                                <div class="pt-30">
+                                    <!-- ADD FILE BUTTON -->
+                                    <div class="md-accent md-raised md-button md-default-theme md-ink-ripple" ngf-select="onFileSelect(item.file)" data-ng-model="item.file" name="file" data-ngf-pattern="'image/*'" 
+                                         ngf-accept="'image/*'" ngf-max-size="20MB" 
+                                         ngf-resize="{width: 100, height: 100}" data-translate="DASHBOARD.Choose image"
+                                         data-ng-if="item.cached_image_thumbnails.length == 0">
+                                    </div>
+                                    <div data-ng-if="item.cached_image_thumbnails.length > 0">
+                                        <div data-ng-repeat="img in item.cached_image_thumbnails">
+                                            <img data-ng-src="{{img}}" class="thumb" />
+                                            <button class="md-icon-button edit-group-button md-button ng-scope md-default-theme md-ink-ripple" type="button" data-ng-click="removeImage($index)" aria-label="delete group" translate="">
+                                                <md-icon md-font-icon="icon-delete s18" class="ng-scope md-default-theme md-font material-icons icon-delete s18" aria-hidden="true"></md-icon>
+                                                <md-tooltip><span data-translate="DASHBOARD.Delete"></span></md-tooltip>
+                                                <div class="md-ripple-container"></div>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="md-errors-spacer"></div>
+                            </md-input-container>
+                        </div>
+                        <!--/Image uploder-->
+
+                        <!--Password-->
+                        <div layout="column" layout-gt-sm="row" flex>
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <input type="password" name="password" data-ng-model="item.password"
+                                       placeholder="{{'DASHBOARD.Password'|translate}}"
+                                       data-ng-pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}/"
+                                       required>
+                                <div data-ng-messages="createUserForm.password.$error"
+                                     role="alert">
+                                    <div data-ng-message="required">
+                                        <span translate="DASHBOARD.Passwordrequired"></span>
+                                    </div>
+                                    <div data-ng-message="pattern">
+                                        <span translate="DASHBOARD.Passwordpattern"></span>
+                                    </div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <input type="password" name="passwordConfirm"
+                                       data-ng-model="item.passwordConfirm"
+                                       placeholder="{{'DASHBOARD.Passwordconfirm'|translate}}"
+                                       required>
+                                <div data-ng-messages="createUserForm.passwordConfirm.$error"
+                                     role="alert">
+                                    <div data-ng-message="required">
+                                        <span translate="DASHBOARD.Passwordconfirmrequired"></span>
+                                    </div>
+                                    <div data-ng-if="checkpass()">
+                                        <span class="md-caption" translate="DASHBOARD.Passwordnotequal"></span>
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <!--Buttons-->
+                        <div>
+                            <md-button data-ng-disabled="createUserForm.$invalid || checkpass()" type = "submit" data-ng-click="store()"
+                                       class="md-raised" aria-label="{{DASHBOARD.Submit|translate}}" data-translate="DASHBOARD.Submit">
+                            </md-button>
+                            <md-button class="md-raised" aria-label="{{DASHBOARD.Cancel|translate}}" data-translate="DASHBOARD.Cancel" data-ng-click="close()"></md-button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <!-- /Create -->
+
+            <!-- Edit -->
+            <div class="content fullpage-datatable" layout="column" flex data-ng-if="mode == 'edit'">
+                <div class="h2 pd-20" data-translate="DASHBOARD.Edit"></div>
+                <div class="form-wrapper md-whiteframe-1dp flex-100 scrollable" flex="100">
+                    <form name="createUserForm" class="md-inline-form" novalidate data-ng-submit="update()">
+                        <!--Firstname and lastname-->
+                        <div layout="column" layout-gt-xs="row" flex>
+                            <!--FirstName-->
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <input type="text" name="Firstname" data-ng-model="item.first_name"
+                                       placeholder="{{'DASHBOARD.Firstname'|translate}}"
+                                       required>
+                                <div data-ng-messages="createUserForm.Firstname.$error" role="alert">
+                                    <div data-ng-message="required"> 
+                                        <span translate="DASHBOARD.Firstnamerequired" ></span>
+                                    </div>
+                                </div>
+                            </md-input-container>
+
+                            <!--LastName-->
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <input type="text" name="lastname" data-ng-model="item.last_name"
+                                       placeholder="{{'DASHBOARD.Lastname'|translate}}"
+                                       required>
+                                <div data-ng-messages="createUserForm.lastname.$error"
+                                     role="alert">
+                                    <div data-ng-message="required">
+                                        <span translate="DASHBOARD.Lastnamerequired" ></span>
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <!--Email Address-->
+                        <md-input-container class="md-block">
+                            <input type="email" name="email" data-ng-model="item.email" placeholder="{{'DASHBOARD.Email'|translate}}"
+                                   data-ng-pattern="/^.+@.+\..+$/" required disabled>
+                            <div data-ng-messages="createUserForm.email.$error"
+                                 role="alert" multiple>
+                                <div data-ng-message="required">
+                                    <span translate="DASHBOARD.Emailrequired"></span>
+                                </div>
+                                <div data-ng-message="pattern">
+                                    <span translate="DASHBOARD.Emailpattern"></span>
+                                </div>
+                            </div>
+                        </md-input-container>
+
+                        <!--Phone-->
+                        <div layout="column" layout-gt-xs="row" flex>
+                            <md-input-container class="md-block" flex="100" flex-gt-xs="50">
+                                <input type="tel" name="phone" data-ng-model="item.phone" placeholder="{{'DASHBOARD.Phone'|translate}}">
+                            </md-input-container>
+                        </div>
+
+                        <!--Role Selector-->
+                        <div layout="column" layout-gt-xs="row" flex>
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <label>{{'DASHBOARD.Role'|translate}}</label>
+                                <md-select aria-label="Type" required data-ng-model="item.role">
+                                    <md-option value="moderator"  data-translate="DASHBOARD.Moderator"></md-option>
+                                    <md-option value="operator"  data-translate="DASHBOARD.Operator"></md-option>
+                                </md-select>
+                                <!--<div class="md-legend-spacer" data-translate="DASHBOARD.Role"></div>-->
+                            </md-input-container>
+                        </div>
+
+                        <!--Image uploader-->
+                        <div layout="column" layout-gt-sm="row" class="layout-gt-sm-row layout-column">
+                            <md-input-container flex="" class="md-icon-float md-default-theme flex">
+                                <label class="ng-scope" role="button" for="input_2" data-translate="DASHBOARD.Image"></label>
+                                <div class="pt-30">
+                                    <!-- ADD FILE BUTTON -->
+                                    <div class="md-accent md-raised md-button md-default-theme md-ink-ripple" data-ngf-select="onFileSelect(item.file)" data-ng-model="item.file" name="file" data-ngf-pattern="'image/*'"
+                                         ngf-accept="'image/*'" ngf-max-size="20MB" 
+                                         ngf-resize="{width: 100, height: 100}" data-translate="DASHBOARD.Choose image"
+                                         data-ng-if="loadImages(item).length == 0">
+                                        <!--data-ng-if="!item.cached_image_thumbnails||item.cached_image_thumbnails.length == 0">-->
+                                    </div>
+                                    <!--<div data-ng-if="item.cached_image_thumbnails.length > 0">-->
+                                    <div data-ng-if="loadImages(item).length > 0">
+                                        <!--<div data-ng-repeat="img in item.cached_image_thumbnails">-->
+                                        <div data-ng-repeat="img in loadImages(item)" >
+                                            <img data-ng-src="{{img}}" class="thumb" />
+                                            <button class="md-icon-button edit-group-button md-button ng-scope md-default-theme md-ink-ripple" type="button" data-ng-click="removeImage($index)" aria-label="delete group" translate="">
+                                                <md-icon md-font-icon="icon-delete s18" class="ng-scope md-default-theme md-font material-icons icon-delete s18" aria-hidden="true"></md-icon>
+                                                <md-tooltip><span data-translate="DASHBOARD.Delete"></span></md-tooltip>
+                                                <div class="md-ripple-container"></div>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="md-errors-spacer"></div>
+                            </md-input-container>
+                        </div>
+                        <!--/Image uploader-->
+
+                        <!--Password
+                        <div layout="column" layout-gt-sm="row" flex>
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <input type="password" name="password" data-ng-model="item.password"
+                                       placeholder="{{'DASHBOARD.Password'|translate}}"
+                                       data-ng-pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}/"
+                                       required>
+                                <div data-ng-messages="createUserForm.password.$error"
+                                     role="alert">
+                                    <div data-ng-message="required">
+                                        <span translate="DASHBOARD.Passwordrequired"></span>
+                                    </div>
+                                    <div data-ng-message="pattern">
+                                        <span translate="DASHBOARD.Passwordpattern"></span>
+                                    </div>
+                                </div>
+                            </md-input-container>
+    
+                            <md-input-container flex="100" flex-gt-xs="50">
+                                <input type="password" name="passwordConfirm"
+                                       data-ng-model="item.passwordConfirm"
+                                       placeholder="{{'DASHBOARD.Passwordconfirm'|translate}}"
+                                       required>
+                                <div data-ng-messages="createUserForm.passwordConfirm.$error"
+                                     role="alert">
+                                    <div data-ng-message="required">
+                                        <span translate="DASHBOARD.Passwordconfirmrequired"></span>
+                                    </div>
+                                    <div data-ng-if="checkpass()">
+                                        <span class="md-caption" translate="DASHBOARD.Passwordnotequal"></span>
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        /Password-->
+
+                        <!--Buttons-->
+                        <div>
+                            <md-button data-ng-disabled="createUserForm.$invalid" type = "submit"  class="md-raised" 
+                                       aria-label="{{DASHBOARD.Submit|translate}}" data-translate="DASHBOARD.Submit" data-ng-click="update()">
+                            </md-button>
+                            <md-button class="md-raised" aria-label="{{DASHBOARD.Cancel|translate}}" data-translate="DASHBOARD.Cancel" data-ng-click="close()"></md-button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+            <!-- /Edit -->
+
+            <!-- /CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
